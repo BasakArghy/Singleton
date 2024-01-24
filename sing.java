@@ -1,36 +1,33 @@
-public interface Shape {
-    void draw();
+interface ProductFactory {
+void createProduct();
+}
+class SingletonFactory implements ProductFactory {
+    private static SingletonFactory instance;
+
+    // Private constructor to prevent instantiation
+    private SingletonFactory() {
     }
-    public class Rectangle implements Shape {
+
+ // Method to get the singleton instance
+    public static SingletonFactory getInstance() {
+        if (instance == null) {
+            instance = new SingletonFactory();
+        }
+        return instance;
+    }
+
     @Override
-    public void draw() {
-    System.out.println("Inside Rectangle::draw() method.");
+    public Product createProduct() {
+        return new ConcreteProduct1();
     }
-    }
-    public class Square implements Shape {
-    @Override
-    public void draw() {
-    System.out.println("Inside Square::draw() method.");
-    }
-    }
-    public class ShapeFactory {
-    public Shape getShape(String shapeType){
-    if(shapeType == null){
-    return null;
-    }
-     if(shapeType.equalsIgnoreCase("RECTANGLE")){
-    return new Rectangle();
-    } else if(shapeType.equalsIgnoreCase("SQUARE")){
-    return new Square();
-    }
-    return null;
-    }
-    }
-    public class FactoryPatternDemo {
+}
+
+// Client class
+public class Client {
     public static void main(String[] args) {
-    ShapeFactory shapeFactory = new ShapeFactory();
-    Shape shape1 = shapeFactory.getShape("CIRCLE");shape1.draw();
-    Shape shape2 = shapeFactory.getShape("RECTANGLE");shape2.draw();
-    }
-    }
-    
+        // Using Singleton Pattern
+        ProductFactory factory = SingletonFactory.getInstance();
+        Product product = factory.createProduct();
+        product.display();
+    }
+}
